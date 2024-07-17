@@ -1,8 +1,7 @@
 package mackb.nl.mackbpage.business.model;
 
 import jakarta.persistence.*;
-
-import javax.persistence.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -17,17 +16,17 @@ public class User {
     @Column(nullable = false, length = 45)
     private String fullname;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 60) // BCrypt hashes are 60 characters
     private String password; // Store hashed password here
 
     public User (String username, String fullname, String password) {
         this.username = username;
         this.fullname = fullname;
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public User() {
-        this("Default", "Default", "Default");
+        this("Default", "Default", BCrypt.hashpw("Default", BCrypt.gensalt()));
     }
 
     public Long getId() {
@@ -59,6 +58,6 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
