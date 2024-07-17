@@ -28,7 +28,7 @@ public class LoginController {
         if (user != null && User.checkPassword(password, user.getPassword())) {
             session.setAttribute("user", user);
             model.addAttribute("user", user);
-            return "redirect:/tools";
+            return "redirect:/tools"; // Redirect to tools page on successful login
         } else {
             model.addAttribute("error", "Invalid username or password");
             return "login";
@@ -40,7 +40,7 @@ public class LoginController {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user);
-            return "success";
+            return "tools"; // Redirect to tools page
         } else {
             return "redirect:/login";
         }
