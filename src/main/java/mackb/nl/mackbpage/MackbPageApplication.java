@@ -8,6 +8,6 @@ public class MackbPageApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MackbPageApplication.class, args);
-    }
 
+    }
 }
