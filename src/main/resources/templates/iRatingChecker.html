@@ -1,11 +1,28 @@
-<form id="fileForm" action="/irating/upload" method="POST" enctype="multipart/form-data">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>iRating Checker</title>
+    <link rel="stylesheet" th:href="@{/css/iRatingCheckerStyles.css}">
+</head>
+<body>
+<h1>iRating Checker</h1>
+<form id="fileForm" th:action="@{/irating/upload}" method="POST" enctype="multipart/form-data">
     <div>
         <span>CSV File from iRacing:</span>
         <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
     </div>
+    <br>
     <div>
         <span>.txt file with customerIDs:</span>
         <input type="file" id="txtFile" name="txtFile" accept=".txt" required>
     </div>
-    <button type="submit">Display</button>
+    <br>
+    <button id="submitButton" type="submit">Display</button>
+    <button id="exportButton" type="button">Export</button>
 </form>
+<div id="results"></div>
+<script th:src="@{/js/iRatingCheckerJS.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+</html>
