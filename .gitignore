@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/dbinfo.env
+/src/main/resources/hidden-application.properties
