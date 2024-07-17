@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Results</title>
+</head>
+<body>
+<h1>Matching Pilots</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>iRating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pilot : ${pilots}">
+        <td th:text="${pilot.fullName}"></td>
+        <td th:text="${pilot.customerId}"></td>
+        <td th:text="${pilot.iRating}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
