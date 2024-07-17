@@ -3,7 +3,6 @@ package mackb.nl.mackbpage.communication;
 import jakarta.servlet.http.HttpSession;
 import mackb.nl.mackbpage.business.model.User;
 import mackb.nl.mackbpage.persistence.UserRepository;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +25,10 @@ public class LoginController {
     public String loginSubmit(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
         User user = userRepository.findByUsername(username);
 
-        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+        if (user != null && User.checkPassword(password, user.getPassword())) {
             session.setAttribute("user", user);
-            model.addAttribute("user", user); // Add user to the model
-            return "success"; // Return the template name directly
+            model.addAttribute("user", user);
+            return "success";
         } else {
             model.addAttribute("error", "Invalid username or password");
             return "login";

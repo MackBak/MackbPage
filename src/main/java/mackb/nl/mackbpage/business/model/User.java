@@ -1,7 +1,10 @@
 package mackb.nl.mackbpage.business.model;
 
 import jakarta.persistence.*;
-import org.mindrot.jbcrypt.BCrypt;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 
 @Entity
 @Table(name = "users")
@@ -16,17 +19,34 @@ public class User {
     @Column(nullable = false, length = 45)
     private String fullname;
 
-    @Column(nullable = false, length = 60) // BCrypt hashes are 60 characters
-    private String password; // Store hashed password here
+    @Column(nullable = false, length = 255)
+    private String password;
 
-    public User (String username, String fullname, String password) {
+    public User(String username, String fullname, String password) {
         this.username = username;
         this.fullname = fullname;
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = hashPassword(password);
     }
 
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(password.getBytes());
+            return HexFormat.of().formatHex(encodedhash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not found", e);
+        }
+    }
+
+    public static boolean checkPassword(String enteredPassword, String storedPassword) {
+        return hashPassword(enteredPassword).equals(storedPassword);
+    }
+
+
+    // Getters & Setters
+
     public User() {
-        this("Default", "Default", BCrypt.hashpw("Default", BCrypt.gensalt()));
+        this("Default", "Default", "Default");
     }
 
     public Long getId() {
@@ -58,6 +78,6 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = hashPassword(password);
     }
 }
