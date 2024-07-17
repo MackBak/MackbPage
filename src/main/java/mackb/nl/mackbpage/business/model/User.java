@@ -19,25 +19,27 @@ public class User {
     @Column(nullable = false, length = 45)
     private String fullname;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 255)                                             // Set length to 255 because of SHA-256 hashing
     private String password;
 
     public User(String username, String fullname, String password) {
         this.username = username;
         this.fullname = fullname;
-        this.password = hashPassword(password);
+        this.password = hashPassword(password);                                         // Calling method hashPassword to the password is hashed.
     }
 
+    // Method to created a hashed password which can be sent to the MySQL server.
     public static String hashPassword(String password) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(password.getBytes());
-            return HexFormat.of().formatHex(encodedhash);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");        // Creates an instance of a new MessageDigest (messageDigest = default class in Java security for hasing in SHA256).
+            byte[] encodedhash = digest.digest(password.getBytes());                    // Converts the (hashed) password to a byte array. With the digest method I process the byte array to produce the hash.
+            return HexFormat.of().formatHex(encodedhash);                               // Converts the byte array into a hexadecimal string.
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not found", e);
         }
     }
 
+    // Method to check if entered password (when hashed) matches the stored hashed password.
     public static boolean checkPassword(String enteredPassword, String storedPassword) {
         return hashPassword(enteredPassword).equals(storedPassword);
     }
@@ -49,35 +51,8 @@ public class User {
         this("Default", "Default", "Default");
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = hashPassword(password);
-    }
 }

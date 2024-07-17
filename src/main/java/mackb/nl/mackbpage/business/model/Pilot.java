@@ -17,23 +17,12 @@ public class Pilot {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public int getCustomerId() {
         return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
     }
 
     public int getiRating() {
         return iRating;
     }
 
-    public void setiRating(int iRating) {
-        this.iRating = iRating;
-    }
 }

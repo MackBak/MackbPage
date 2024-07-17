@@ -8,11 +8,11 @@ public class IndexController {
 
     @GetMapping({"/", "/index"})
     public String showHomePage() {
-        return "index"; // This corresponds to the index.html template
+        return "index";                             // Goes to the Index page.
     }
 
     @GetMapping("/tools")
     public String showToolsPage() {
-        return "tools"; // This corresponds to the tools.html template
+        return "tools";                             // Goes to the tools page.
     }
 }

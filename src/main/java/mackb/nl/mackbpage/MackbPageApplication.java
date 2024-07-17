@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource("classpath:hidden-application.properties")
+@PropertySource("classpath:hidden-application.properties")  // Tells Spring to load the properties from the hidden-application file. This will contain server info.
 public class MackbPageApplication {
 
     public static void main(String[] args) {
