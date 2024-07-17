@@ -28,7 +28,7 @@ public class LoginController {
         if (user != null && User.checkPassword(password, user.getPassword())) {
             session.setAttribute("user", user);
             model.addAttribute("user", user);
-            return "success";
+            return "redirect:/tools";
         } else {
             model.addAttribute("error", "Invalid username or password");
             return "login";
