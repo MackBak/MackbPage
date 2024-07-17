@@ -43,6 +43,24 @@ public class IRatingCheckerController {
 
     private Pilot mapToPilot(String line) {
         String[] values = line.split(",");
-        return new Pilot(values[0], Integer.parseInt(values[1].trim()), Integer.parseInt(values[14].trim()));
+        String fullName = values[0];
+        int customerId;
+        int iRating;
+
+        try {
+            customerId = Integer.parseInt(values[1].trim());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing customerId: " + values[1]);
+            customerId = -1; // or handle as needed
+        }
+
+        try {
+            iRating = Integer.parseInt(values[14].trim());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing iRating: " + values[14]);
+            iRating = -1; // or handle as needed
+        }
+
+        return new Pilot(fullName, customerId, iRating);
     }
 }
