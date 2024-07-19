@@ -5,9 +5,7 @@ import mackb.nl.mackbpage.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegisterController {
@@ -17,11 +15,14 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegistrationForm() {
+        System.out.println("showRegistrationForm - GETMapping");
+
         return "register"; // Goes to register page
     }
 
     @PostMapping("/register")
     public String processRegistration(@RequestParam String username, @RequestParam String fullname, @RequestParam String password, Model model) {
+
         // Checks if user already exists
         if (userRepository.findByUsername(username) != null) {
             model.addAttribute("error", "Username already exists. Choose a different username.");
@@ -31,6 +32,7 @@ public class RegisterController {
         // Creates new user with hashed password and saves to repository
         User newUser = new User(username, fullname, password);
         userRepository.save(newUser);
+        System.out.println(newUser.getPassword() + " password from " + username);
 
         // Redirects to the login page with a success message
         model.addAttribute("message", "Registration successful. Please log in.");

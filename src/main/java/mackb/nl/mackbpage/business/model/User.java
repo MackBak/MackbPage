@@ -1,10 +1,7 @@
 package mackb.nl.mackbpage.business.model;
 
 import jakarta.persistence.*;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -19,34 +16,26 @@ public class User {
     @Column(nullable = false, length = 45)
     private String fullname;
 
-    @Column(nullable = false, length = 255)                                             // Set length to 255 because of SHA-256 hashing
+    @Column(nullable = false, length = 256)  // BCrypt hashed password length
     private String password;
 
     public User(String username, String fullname, String password) {
         this.username = username;
         this.fullname = fullname;
-        this.password = hashPassword(password);                                         // Calling method hashPassword to the password is hashed.
+        this.password = hashPassword(password);
     }
 
-    // Method to created a hashed password which can be sent to the MySQL server.
+    // Method to create a hashed password using BCrypt
     public static String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");        // Creates an instance of a new MessageDigest (messageDigest = default class in Java security for hasing in SHA256).
-            byte[] encodedhash = digest.digest(password.getBytes());                    // Converts the (hashed) password to a byte array. With the digest method I process the byte array to produce the hash.
-            return HexFormat.of().formatHex(encodedhash);                               // Converts the byte array into a hexadecimal string.
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not found", e);
-        }
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    // Method to check if entered password (when hashed) matches the stored hashed password.
+    // Method to check if entered password (when hashed) matches the stored hashed password
     public static boolean checkPassword(String enteredPassword, String storedPassword) {
-        return hashPassword(enteredPassword).equals(storedPassword);
+        return BCrypt.checkpw(enteredPassword, storedPassword);
     }
-
 
     // Getters & Setters
-
     public User() {
         this("Default", "Default", "Default");
     }
@@ -55,4 +44,9 @@ public class User {
         return password;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    // More getters and setters as needed
 }

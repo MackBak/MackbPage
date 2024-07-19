@@ -14,6 +14,7 @@ public class SecurityConfig {
     @Bean                                                                                           // Method is a bean producer.
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {            // Underneath here I'll configure the security filter for the webpages.
         http
+//                .csrf().disable()  //TEST Disable CSRF protection
                 .authorizeHttpRequests(authorize -> authorize                                       // Starts configuration for request authorization.
                         .requestMatchers("/", "/index", "/register","/login", "/css/**").permitAll()    // Any page added here can be accessed by anyone
                         .anyRequest().authenticated()                                               // All pages that are not added in the line above will need authentication
@@ -21,7 +22,7 @@ public class SecurityConfig {
                 .formLogin(form -> form                                                             // Configures form based login
                         .loginPage("/login")                                                        // Specifies the login page to be used
                         .permitAll()                                                                // Allows everyone to see this page
-                        .defaultSuccessUrl("/success", true)                // Redirects to success page after successful login.
+                        .defaultSuccessUrl("/tools", true)                // Redirects to success page after successful login.
                 );
         return http.build();                                                                        // Builds and returns the securityFilterChain.
     }

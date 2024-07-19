@@ -8,11 +8,15 @@ public class IndexController {
 
     @GetMapping({"/", "/index"})
     public String showHomePage() {
+        System.out.println("showHomePage - GETmapping");
+
         return "index";                             // Goes to the Index page.
     }
 
     @GetMapping("/tools")
     public String showToolsPage() {
+        System.out.println("showToolsPage - GETmapping");
+
         return "tools";                             // Goes to the tools page.
     }
 }
